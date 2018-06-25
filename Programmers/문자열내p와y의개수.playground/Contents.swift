@@ -45,9 +45,10 @@ func solution(_ s:String) -> Bool
             yCount += 1
         }
     }
-    
+
     if pCount == yCount {
-        ans == true
+        
+        ans = true
     }
     
     
