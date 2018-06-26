@@ -39,9 +39,3 @@ func solution(_ s:String) -> String {
     return isEven ? String(str[beforeindex...halfIndex]) : String(str[halfIndex])
 }
 
-solution("abcde")
-solution("qwer")
-solution("ab")
-solution("a")
-
-
