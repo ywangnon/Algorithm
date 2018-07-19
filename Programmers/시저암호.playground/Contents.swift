@@ -78,7 +78,7 @@ func solution2(_ s:String, _ n:Int) -> String {
 }
 
 /********************************************
- 멋지게 풀었다고 생각했다.
+ 멋지게 풀었다고 생각한다.
  Unicode 32가 공백이다.
  - 1번째 map
  unicodeScala의 value 값으로 UInt32를 구한다.
