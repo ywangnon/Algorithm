@@ -16,7 +16,7 @@
  qwer  |  we
 */
 
-/*
+/********************************************
  짝수일때:
  asdfgh -> df
  6 -> 3,4 str.count/2, str.count/2 + 1
@@ -26,8 +26,7 @@
  asdfg -> d
  5 -> 3 : str.count/2 + 1
  2
- 
- */
+ ********************************************/
 
 func solution(_ s:String) -> String {
     let str = s
