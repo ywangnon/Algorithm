@@ -14,7 +14,7 @@
 ## 입출력 예
 
 s|answer
----|---
+:---:|:---:
 pPoooyY|true
 Pyy|false
 
@@ -26,3 +26,8 @@ Pyy|false
 입출력 예 #2
 'p'의 개수 1개, 'y'의 개수 2개로 다르므로 false를 return 합니다.
 
+## 참고
+
+- components(separatedBy: )
+- uppercased()
+- lowercased()

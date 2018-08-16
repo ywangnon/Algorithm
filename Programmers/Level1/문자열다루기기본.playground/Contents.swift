@@ -18,6 +18,7 @@
  
  1234    true
  */
+import Foundation
 
 func solution(_ s:String) -> Bool {
     if s.count == 4 || s.count == 6 {
@@ -28,6 +29,14 @@ func solution(_ s:String) -> Bool {
     
     return false
 }
+
+func solution4(_ s:String) -> Bool {
+    return (s.count == 4 || s.count == 6) && Int(s) != nil ? true : false
+}
+
+/********************************************
+ 복잡한 삼항연산자가 적용되는지 확인해보았다. 적용된다.
+ ********************************************/
 
 print("\n---------- [ 다른 사람의 풀이] ----------\n")
 
