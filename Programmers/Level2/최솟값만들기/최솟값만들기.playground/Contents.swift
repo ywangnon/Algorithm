@@ -63,13 +63,14 @@ func solution(_ A:[Int], _ B:[Int]) -> Int
 
 func solution2(_ A:[Int], _ B:[Int]) -> Int
 {
-    var ans = 0
+    var ans = [Int].init(repeating: 0, count: A.count)
     var arrA = A.sorted(by: >)
     var arrB = B.sorted(by: <)
     
-    for _ in 1...A.count {
-        ans += (arrA.removeFirst() * arrB.removeFirst())
-    }
-    
-    return ans
+    return ans.map { $0 + (arrA.removeFirst() * arrB.removeFirst())}.reduce(0, +)
 }
+
+/********************************************
+ 라인수는 줄어들지만, for 문 쓰는 것보다 작업량이 많을 것이라 생각든다.
+ 처음에 ans 배열을 만들고, 그 배열에에 계산해서 각각의 값을 넣은 다음, 그 값들을 다 더해주는 것이기 때문이다.
+ ********************************************/
