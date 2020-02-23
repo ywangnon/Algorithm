@@ -1,0 +1,47 @@
+// #2 Valid Parentheses
+class Solution2 {
+    func isValid(_ s: String) -> Bool {
+        let arr = s.map{ $0 }
+        var result: [String] = []
+        for elem in arr {
+            if elem == "(" {
+                result.append("(")
+            } else if elem == "[" {
+                result.append("[")
+            } else if elem == "{" {
+                result.append("{")
+            } else if elem == ")" {
+                if result.last != "(" {
+                    result.append(")")
+                    break
+                } else {
+                    result.removeLast()
+                }
+            } else if elem == "]" {
+                if result.last != "[" {
+                    result.append("]")
+                    break
+                } else {
+                    result.removeLast()
+                }
+            } else if elem == "}" {
+                if result.last != "{" {
+                    result.append("}")
+                    break
+                } else {
+                    result.removeLast()
+                }
+            }
+        }
+        return result.count == 0
+    }
+}
+
+let solution = Solution2()
+solution.isValid("){")
+
+// Time Complex: n + n
+// O(2N) -> O(N)
+
+// Space Complex: n + @
+// O(N)
