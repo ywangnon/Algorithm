@@ -139,6 +139,9 @@ public struct Queue<T> {
 
 - head를 넣어 맨 처음 요소를 설정하고 dequeueing시 앞 배열을 nil로 바꾸고 head 증가시킴
 - head를 재설정하지 않으면 배열이 커지기때문에 일정 조건이 해당시 head를 재설정
+- enqueueing: O(1)
+- dequeueing: O(1)
+
 
 
 
