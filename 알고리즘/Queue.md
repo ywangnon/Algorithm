@@ -31,4 +31,3 @@ public struct Stack<T> {
   }
 }
 ```
-
