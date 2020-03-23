@@ -32,6 +32,13 @@ public struct Stack<T> {
 }
 ```
 
+### 시간복잡도
+
+- push: O(1)
+- pop: O(1)
+- empty: O(1)
+- count: O(1)
+
 ### 특징
 
 - 새로운 요소를 배열의 끝에 놓음
@@ -141,6 +148,29 @@ public struct Queue<T> {
 - head를 재설정하지 않으면 배열이 커지기때문에 일정 조건이 해당시 head를 재설정
 - enqueueing: O(1)
 - dequeueing: O(1)
+
+### 시간복잡도
+
+- enqueue: O(1)
+- dequeue: O(1)
+- empty: O(1)
+- count: O(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
