@@ -1,120 +1,134 @@
-# 빅오 표기법, 시간 복잡도, 공간 복잡도
+# ⚙️ 빅오(Big-O), 시간 복잡도, 공간 복잡도
 
+알고리즘의 성능을 수학적으로 표현할 때 사용하는 **Big-O 표기법**에 대해 정리합니다.
 
+---
 
-## big-O
+## 🧠 Big-O 표기법이란?
 
-알고리즘의 효율성을 나타내는 지표
+> 알고리즘의 **시간** 또는 **공간 효율성**을 나타내는 수학적 표기법입니다.
 
-## 시간 복잡도
+* 입력 크기가 충분히 **커졌을 때의 성능 한계**를 나타냅니다.
+* 하드웨어, 언어, 구현체와 무관하게 **계산량을 추상화**하여 비교 가능하게 합니다.
 
-big-O의 시간 개념
+---
 
-알고리즘의 수행 시간 
+## ⏱️ 시간 복잡도 (Time Complexity)
 
-데이터의 입력을 충분히 큰 것으로 가정
+> 입력 크기 N이 커짐에 따라 **수행 시간**이 어떻게 증가하는지 표현합니다.
 
-> **상수항 무시**
-> $$
-> O(2N) -> O(N)\\
-> O(N^2 + 2) -> O(N^2)
-> $$
-> **영향력 없는 항 무시**
-> $$
-> O(N^2 + N) -> O(N^2)\\
-> O(N^2)이 가장 지배적이기 때문에 그 외에 영향력이 없는 항들은 무시합니다.
-> $$
+### 🎯 시간 복잡도 표현 예시
 
-자주 사용되는 big-O
+| 표현         | 설명               | 예시                |
+| ---------- | ---------------- | ----------------- |
+| O(1)       | 입력 크기와 무관한 일정 시간 | 배열 인덱스 접근         |
+| O(log N)   | 로그 시간, 절반씩 탐색    | 이진 탐색             |
+| O(N)       | 선형 시간            | 단순 반복             |
+| O(N log N) | 병합정렬, 퀵정렬 평균     | 대부분의 효율적인 정렬 알고리즘 |
+| O(N²)      | 이중 루프            | 버블 정렬, 삽입 정렬      |
+| O(2^N)     | 지수 시간            | 부분집합 생성, 재귀 백트래킹  |
+| O(N!)      | 팩토리얼 시간          | 순열 탐색             |
 
-> $$
-> O(1) < O(log n) < O(n) < O(n log n) < O(n^2) < O(2^n) < O(n!) < O(n^n) 
-> $$
+### 🧹 상수항, 영향력 작은 항 제거
 
-예제
+> 입력이 커질수록 영향력이 없는 항은 제거합니다.
 
-- 입력값 10, 결과값 100
+$$
+O(2N) \rightarrow O(N) \\
+O(N^2 + 2N + 1) \rightarrow O(N^2)
+$$
 
-**O(1)**
+---
+
+### ✅ 시간 복잡도 예제 (Swift)
+
+#### O(1)
 
 ```swift
-func sum1(n: Int) -> Int {
-	return n * n
+func square(n: Int) -> Int {
+    return n * n  // 입력 크기와 무관, 1회 연산
 }
 ```
 
-**O(N)**
-
-```swift
-func sum2(n: Int) -> Int {
-  var sum = 0
-  for 1 in n {
-    sum += n
-  }
-  return sum
-}
-```
-
-**O(N^2)**
-
-```swift
-func sum3(n: Int) -> Int {
-  var sum = 0
-  for 1 in n {
-    for 1 in n {
-      sum += 1
-    }
-  }
-  return sum
-}
-```
-
-
-
-## 공간 복잡도
-
-big-O의 공간 개념
-
-알고리즘의 공간 필요 정도 
-
-> 크기 N인 배열 O(N)
->
-> 크기 N x N인 배열 O(N^2)
-
-예제
-
-- 1부터 n까지의 합
-
-**O(N)**
+#### O(N)
 
 ```swift
 func sum(n: Int) -> Int {
-  var sum = 0
-  if n < 1 {
-    return 0
-  }
-  return n + sum(n-1)
+    var result = 0
+    for i in 1...n {
+        result += i
+    }
+    return result
 }
 ```
 
-**O(1)**
+#### O(N^2)
 
 ```swift
-func mainSum(n: Int) -> Int {
-  var result = 0
-  for 0 in n {
-    result += sum(i, i + 1)
-  }
-  return result
-}
-
-func sum(a: Int, b: Int) -> Int {
-  return a + b
+func nestedSum(n: Int) -> Int {
+    var result = 0
+    for i in 1...n {
+        for j in 1...n {
+            result += 1
+        }
+    }
+    return result
 }
 ```
 
+---
 
+## 🧮 공간 복잡도 (Space Complexity)
 
-## 참고자료
+> 입력 크기 N에 따라 **필요한 메모리 공간**이 어떻게 증가하는지를 나타냅니다.
 
-https://cjh5414.github.io/big-o-notation/
+### 📌 주요 예시
+
+| 예시                                                                         | 공간 복잡도 |
+| -------------------------------------------------------------------------- | ------ |
+| `var arr = [Int](repeating: 0, count: n)`                                  | O(N)   |
+| `var matrix = [[Int]](repeating: Array(repeating: 0, count: n), count: n)` | O(N²)  |
+| 상수 개수의 변수만 사용                                                              | O(1)   |
+
+---
+
+### ✅ 공간 복잡도 예제 (Swift)
+
+#### O(N): 재귀 호출
+
+```swift
+func recursiveSum(_ n: Int) -> Int {
+    if n <= 1 { return n }
+    return n + recursiveSum(n - 1)
+}
+```
+
+> 호출 스택이 최대 `n`만큼 쌓이므로 공간 복잡도는 O(N)
+
+---
+
+#### O(1): 상수 공간
+
+```swift
+func simpleAdd(n: Int) -> Int {
+    return n * (n + 1) / 2
+}
+```
+
+> 변수 2\~3개로만 연산 → 공간 복잡도는 O(1)
+
+---
+
+## 📊 시간 복잡도 차이 시각 예시
+
+| 입력 크기(N) | O(1) | O(log N) | O(N) | O(N log N) | O(N²)     |
+| -------- | ---- | -------- | ---- | ---------- | --------- |
+| 10       | 1    | \~3.3    | 10   | \~33       | 100       |
+| 100      | 1    | \~6.6    | 100  | \~660      | 10,000    |
+| 1000     | 1    | \~10     | 1000 | \~10,000   | 1,000,000 |
+
+---
+
+## 🔗 참고자료
+
+* [Big-O 완벽 정리 (cjh 블로그)](https://cjh5414.github.io/big-o-notation/)

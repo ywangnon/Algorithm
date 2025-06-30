@@ -1,190 +1,167 @@
-# Queues
+# 🔄 Queues & Stacks in Swift
 
-## Stack
+Swift에서의 스택과 큐 자료구조 구현 및 시간 복잡도 정리입니다.
 
-- Last-in, first-out!
+---
 
-### 구현
+## 📦 Stack (스택)
+
+> **LIFO (Last-In First-Out)** 구조
+
+---
+
+### ✅ 구현 (Swift)
 
 ```swift
 public struct Stack<T> {
-  fileprivate var array = [T]()
+    fileprivate var array = [T]()
 
-  public var isEmpty: Bool {
-    return array.isEmpty
-  }
+    public var isEmpty: Bool { array.isEmpty }
+    public var count: Int { array.count }
 
-  public var count: Int {
-    return array.count
-  }
+    public mutating func push(_ element: T) {
+        array.append(element)
+    }
 
-  public mutating func push(_ element: T) {
-    array.append(element)
-  }
+    public mutating func pop() -> T? {
+        return array.popLast()
+    }
 
-  public mutating func pop() -> T? {
-    return array.popLast()
-  }
-
-  public var top: T? {
-    return array.last
-  }
+    public var top: T? {
+        return array.last
+    }
 }
 ```
 
-### 시간복잡도
+---
 
-- push: O(1)
-- pop: O(1)
-- empty: O(1)
-- count: O(1)
+### ⏱️ 시간 복잡도
 
-### 특징
+| 연산                 | 복잡도  |
+| ------------------ | ---- |
+| `push`             | O(1) |
+| `pop`              | O(1) |
+| `top`              | O(1) |
+| `isEmpty`, `count` | O(1) |
 
-- 새로운 요소를 배열의 끝에 놓음
-  - 시작 부분에 삽입시: O(n): 기존 요소를 모두 이동
-  - 끝 부분에 삽입시: O(1)
-- 주의: 
-  1. function, method 호출 시 CPU는 반환 주소를 스택에 배치.
-  2. 함수 종료시, CPU는 반환 주소를 사용하여 호출자에게로 다시 이동.
-  3. 따라서 너무 많은 함수 혹은 끝이 없는 재귀 함수 호출 시, CPU 스택에 공간이 부족해져서 '스택오버플로'가 발생.
+---
 
-## Queue
+### 💡 특징
 
-- First-in, first-out!
+* 새로운 요소는 배열 **끝에 삽입** → O(1)
+* 시작 부분 삽입 시 O(n) 발생 (주의)
+* **함수 호출 스택**에 사용됨
 
-### 구현
+  * 함수가 호출될 때, **반환 주소**를 스택에 저장
+  * 재귀가 너무 깊으면 **스택 오버플로우** 발생
+
+---
+
+## 🧮 Queue (큐)
+
+> **FIFO (First-In First-Out)** 구조
+
+---
+
+### ✅ 기본 구현
 
 ```swift
 public struct Queue<T> {
-  fileprivate var array = [T]()
+    fileprivate var array = [T]()
 
-  public var isEmpty: Bool {
-    return array.isEmpty
-  }
-  
-  public var count: Int {
-    return array.count
-  }
+    public var isEmpty: Bool { array.isEmpty }
+    public var count: Int { array.count }
 
-  public mutating func enqueue(_ element: T) {
-    array.append(element)
-  }
-  
-  public mutating func dequeue() -> T? {
-    if isEmpty {
-      return nil
-    } else {
-      return array.removeFirst()
+    public mutating func enqueue(_ element: T) {
+        array.append(element)
     }
-  }
-  
-  public var front: T? {
-    return array.first
-  }
+
+    public mutating func dequeue() -> T? {
+        return isEmpty ? nil : array.removeFirst()
+    }
+
+    public var front: T? {
+        return array.first
+    }
 }
 ```
 
-- enqueueing: O(1):
-  - 배열 끝에 새로운 요소 삽입
-  - 평소에는 사용되지 않는 빈 배열의 수가 정해져있음.
-  - 사용되지 않는 빈 배열이 다 차면 더 큰 공간을 확보하기 위해 새로운 메모리 할당 및 새 배열로 복사하는 작업(O(n)) 진행
-  - 위 작업은 때때로 발생하므로 평균 O(1)
-- dequeueing: O(n)
-  - 배열의 시작 부분에서 요소를 제거
-  - 나머지 모든 배열 요소를 이동해야하므로 O(n)
-  
-### 좀 더 효율적으로!
-  
-- dequeueing이 일어날 때마다 O(n)의 작업을 하는 것은 비효율적
-- main Idea: dequeueing할 시 dequeueing된 위치를 제거하지 말고 빈 배열로 바꿈
-- 결론적으로는 dequeueing으로 생긴 배열의 앞부분 빈 배열을 없애고 요소들을 당겨주는 작업을 해야함
-- 당겨주는 작업은 때때로 발생하므로 평균 O(1)
-  
-  
+---
+
+### ⛔ 단점
+
+| 연산        | 복잡도  | 설명                   |
+| --------- | ---- | -------------------- |
+| `enqueue` | O(1) | 배열 끝에 추가             |
+| `dequeue` | O(n) | 앞 요소 제거 시 나머지를 모두 이동 |
+
+---
+
+## ⚡ 개선된 Queue (헤드 인덱스 방식)
+
+> 앞 요소를 `nil`로 바꾸고, 필요할 때만 배열 압축
+
+---
+
+### ✅ 효율적 구현
+
 ```swift
 public struct Queue<T> {
-  fileprivate var array = [T?]()
-  fileprivate var head = 0
-  
-  public var isEmpty: Bool {
-    return count == 0
-  }
+    fileprivate var array = [T?]()
+    fileprivate var head = 0
 
-  public var count: Int {
-    return array.count - head
-  }
-  
-  public mutating func enqueue(_ element: T) {
-    array.append(element)
-  }
-  
-  public mutating func dequeue() -> T? {
-    guard head < array.count, let element = array[head] else { return nil }
+    public var isEmpty: Bool { count == 0 }
+    public var count: Int { array.count - head }
 
-    array[head] = nil
-    head += 1
-
-    let percentage = Double(head)/Double(array.count)
-    if array.count > 50 && percentage > 0.25 {
-      array.removeFirst(head)
-      head = 0
+    public mutating func enqueue(_ element: T) {
+        array.append(element)
     }
-    
-    return element
-  }
-  
-  public var front: T? {
-    if isEmpty {
-      return nil
-    } else {
-      return array[head]
+
+    public mutating func dequeue() -> T? {
+        guard head < array.count, let element = array[head] else { return nil }
+
+        array[head] = nil
+        head += 1
+
+        // 메모리 최적화: 배열 사용률 25% 이하일 때 압축
+        if array.count > 50 && Double(head)/Double(array.count) > 0.25 {
+            array.removeFirst(head)
+            head = 0
+        }
+
+        return element
     }
-  }
+
+    public var front: T? {
+        return isEmpty ? nil : array[head]
+    }
 }
 ```
 
-- head를 넣어 맨 처음 요소를 설정하고 dequeueing시 앞 배열을 nil로 바꾸고 head 증가시킴
-- head를 재설정하지 않으면 배열이 커지기때문에 일정 조건이 해당시 head를 재설정
-- enqueueing: O(1)
-- dequeueing: O(1)
+---
 
-### 시간복잡도
+### ⏱️ 시간 복잡도 (평균)
 
-- enqueue: O(1)
-- dequeue: O(1)
-- empty: O(1)
-- count: O(1)
+| 연산                 | 복잡도  |
+| ------------------ | ---- |
+| `enqueue`          | O(1) |
+| `dequeue`          | O(1) |
+| `front`            | O(1) |
+| `isEmpty`, `count` | O(1) |
 
+---
 
+### 🧠 핵심 아이디어
 
+* `dequeue` 시 요소를 삭제하지 않고 `nil` 처리
+* **head 포인터**로 실제 시작점을 추적
+* **사용률이 낮을 때만 배열 압축** → 시간 복잡도 평균 O(1) 유지
 
+---
 
+## 🧾 참고 요약
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+| 자료구조  | 특징   | 주요 구현 전략                  |
+| ----- | ---- | ------------------------- |
+| Stack | LIFO | 배열 끝에 append/pop          |
+| Queue | FIFO | 앞에서 제거, 효율 위해 head 포인터 사용 |
